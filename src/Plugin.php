@@ -3,7 +3,7 @@
 /**
  * Composer plugin, locale builder
  * @package iqomp/locale
- * @version 1.0.0
+ * @version 1.0.1
  */
 
 namespace Iqomp\Locale;
@@ -111,31 +111,35 @@ class Plugin implements PluginInterface, EventSubscriberInterface
 
             $install_path = $package->{'install-path'};
 
-            $locale_dir   = realpath(implode('/', [
+            $locale_dir_abs   = realpath(implode('/', [
                 $composer_dir,
                 $install_path,
                 $locale_dir
             ]));
 
-            if (!$locale_dir) {
-                $locale_dir = realpath(implode('/', [
+            if (!$locale_dir_abs) {
+                $locale_dir_abs = realpath(implode('/', [
                     $install_path,
                     $locale_dir
                 ]));
             }
 
-            if (!$locale_dir || !is_dir($locale_dir)) {
+            if (!$locale_dir_abs || !is_dir($locale_dir_abs)) {
                 continue;
             }
 
-            $languages = self::scanDir($locale_dir);
+            $languages = self::scanDir($locale_dir_abs);
 
             foreach ($languages as $lang) {
+                $domain_dir = $locale_dir_abs . '/' . $lang;
+                if (!is_dir($domain_dir)) {
+                    continue;
+                }
+
                 if (!isset($locales[$lang])) {
                     $locales[$lang] = [];
                 }
 
-                $domain_dir = $locale_dir . '/' . $lang;
                 $domain_files = self::scanDir($domain_dir);
 
                 foreach ($domain_files as $file) {
