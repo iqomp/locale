@@ -1,19 +1,36 @@
 <?php
 declare(strict_types=1);
 
-namespace Iqomp\Tests;
+namespace Iqomp\Locale\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Iqomp\Locale\Locale;
 
 final class LocaleTest extends TestCase
 {
-    public function testAddLocaleDir(): void {
+    public function testAddLocaleDir(): void
+    {
         Locale::reset();
         Locale::addLocaleDir(__DIR__ . '/locale/main01');
         Locale::setLanguage('id');
 
         $this->assertEquals('Bukan Binari', Locale::translate('Non Binary'));
+    }
+
+    public function testEncode(): void
+    {
+        $data = [
+            'text' => 'translation key',
+            'map'  => [
+                'name' => 'Khan',
+                'age'  => '$user.aget'
+            ],
+            'domain' => 'user'
+        ];
+
+        $res = Locale::encode($data['text'], $data['map'], $data['domain']);
+
+        $this->assertEquals(json_encode($data), $res);
     }
 
     public function testFetchTranslation(): void {

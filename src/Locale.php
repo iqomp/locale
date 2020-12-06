@@ -3,7 +3,7 @@
 /**
  * Locale processor
  * @package iqomp/locale
- * @version 1.0.0
+ * @version 1.1.0
  */
 
 namespace Iqomp\Locale;
@@ -30,6 +30,28 @@ class Locale
 
         self::$exLocaleDirs[] = $path;
         self::reset();
+    }
+
+    /**
+     * Encode translation to save as string
+     * @param string $text Translation text
+     * @param array $map Parameters map
+     * @param string $domain Translation domain
+     * @return string
+     */
+    public static function encode(
+        string $text,
+        array $map = [],
+        string $domain = null
+    ): string {
+
+        $result = [
+            'text'   => $text,
+            'map'    => $map,
+            'domain' => $domain
+        ];
+
+        return json_encode($result);
     }
 
     /**

@@ -3,7 +3,7 @@
     "description": "Simple module text translation",
     "type": "composer-plugin",
     "license": "MIT",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "authors": [
         {
             "name": "Iqbal Fauzi",
@@ -16,7 +16,8 @@
         "ext-intl": "*"
     },
     "extra": {
-        "class": "Iqomp\\Locale\\Plugin"
+        "class": "Iqomp\\Locale\\Plugin",
+        "iqomp/config": "iqomp/config/"
     },
     "autoload": {
         "psr-4": {
@@ -25,10 +26,11 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Iqomp\\Tests\\": "tests/"
+            "Iqomp\\Locale\\Tests\\": "tests/"
         }
     },
     "require-dev": {
+        "iqomp/formatter": "^1.0",
         "phpunit/phpunit": "^9",
         "squizlabs/php_codesniffer": "3.*"
     },

@@ -96,6 +96,13 @@ it possible to include dynamic dir in translation database. But it's not recomme
 as each translation in the folder will not be cached. If your application has
 translation, add the folder to your application `composer.json` instead.
 
+### static encode(string $text, array $map=[], string $domain=null): string
+
+Encode translation to use on [formatter](https://github.com/iqomp/formatter/).
+The `map` arguments is array key-value pair where key is translation param, and
+value is the value to use that accept prefix `$` to get the value from formatted
+object.
+
 ### static fetchTranslation(): void
 
 Re-fetch all translation from cache or from additional locale dir with current
@@ -124,6 +131,41 @@ from request header `HTTP_ACCEPT_LANGUAGE`.
 
 Translate the text. If `domain` is null, it will use random domain.
 
+## Formatter
+
+If you're using [iqomp/formatter](https://github.com/iqomp/formatter/) for your
+object formatter, this module add new format type to use to translate encoded
+locale map.
+
+Save the encoded locale with encode function above:
+
+```php
+$object = [
+    'user' => 1,
+    'greeting' => Locale::encode('Hello name', [
+        'title' => 'Mr',
+        'name'  => '$user.name.last'
+    ])
+];
+
+Model::create($object);
+```
+
+Then use the `locale` format type to translate the encoded translation to current
+locale request.
+
+```php
+return [
+    'formats' => [
+        'greeting' => [
+            'user' => stdModel,// ...
+            'greeting' => [
+                'type' => 'locale'
+            ]
+        ]
+    ]
+];
+```
 
 ## Unit Test
 
