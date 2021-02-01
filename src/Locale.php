@@ -3,7 +3,7 @@
 /**
  * Locale processor
  * @package iqomp/locale
- * @version 1.1.0
+ * @version 1.1.1
  */
 
 namespace Iqomp\Locale;
@@ -302,6 +302,11 @@ class Locale
 
         $formatter = self::$transICU[$template];
 
-        return msgfmt_format($formatter, $params);
+        $result = msgfmt_format($formatter, $params);
+        if (!$result) {
+            return $templates[$domain];
+        }
+
+        return $result;
     }
 }
